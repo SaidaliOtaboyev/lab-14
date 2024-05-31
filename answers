@@ -1,0 +1,457 @@
+//created by Saidali Otaboyev
+#include <iostream>
+#include <map>
+#include <unordered_map>
+#include <vector>
+#include <unordered_set>
+#include <string>
+#include <set>
+#include <queue>
+#include <stack>
+#include <algorithm> 
+
+
+
+using namespace std;
+
+void pm(){
+    static int n = 1;
+    cout << "PROBLEM " << n << endl;
+    n++;
+}
+
+void printMap(const map<int, double>& m) {
+    for (const auto& pair : m) {
+        cout << "(" << pair.first << ", " << pair.second << ")\n";
+    }
+}
+
+
+void displayMap(const unordered_map<string, int>& umap) {
+    for (const auto& pair : umap) {
+        cout << "Key: " << pair.first << ", Value: " << pair.second << endl;
+    }
+}
+
+
+void show(const set<int>& s) {
+    for (auto it = s.begin(); it != s.end(); ++it) {
+        cout << *it << " ";
+    }
+    cout << endl;
+}
+
+
+void show10(const unordered_set<int>& s) {
+    for (auto it = s.begin(); it != s.end(); ++it) {
+        cout << *it << " ";
+    }
+    cout << endl;
+}
+
+
+void show11(const multiset<int>& s) {
+    for (auto it = s.begin(); it != s.end(); ++it) {
+        cout << *it << " ";
+    }
+    cout << endl;
+}
+
+
+bool isSymmetric(const vector<int>& nums) {
+    int n = nums.size();
+    if (n == 0) return true;
+    
+    return nums[0] % 10 == nums[n - 1] % 10;
+}
+
+
+void displayQueue(queue<int> q) {
+    cout << "Elements in the queue: ";
+    while (!q.empty()) {
+        cout << q.front() << " ";
+        q.pop();
+    }
+    cout << endl;
+}
+
+
+void clearQueue(queue<int> &q) {
+    while (!q.empty()) {
+        q.pop();
+    }
+    cout << "Queue cleared." << endl;
+}
+
+
+int main() {
+    
+    
+    // p1
+    pm();
+    map<int, int> m;
+    m[1] = 1; m[2] = 4; m[3] = 9; m[4] = 16; m[5] = 25;
+    
+    cout << "Elements in map:\n";
+    for (const auto& pair : m) cout << "[ " << pair.first << ", " << pair.second << " ]\n";
+    cout << endl;
+    
+    for (const auto& pair : m) cout << "Square of " << pair.first << " is " << pair.second << "\n";
+    
+    
+    // p2
+    pm();
+    map<int, string> m2;
+    m2[74] = "Mike"; m2[76] = "Elena"; m2[93] = "David"; m2[70] = "George"; m2[89] = "Indira";
+    for (const auto& pair : m2) cout << pair.first << " place is " << pair.second << "\n";
+    
+    
+    // p3
+    pm();
+    map<char, int> m3;
+    for (char letter = 'A'; letter <= 'Z'; ++letter) m3[letter] = letter - 'A' + 1;
+    
+    char inputLetter;
+    cout << "Enter an uppercase letter: "; cin >> inputLetter;
+    
+    if (m3.find(inputLetter) != m3.end()) cout << "The position of " << inputLetter << " in the alphabet is " << m3[inputLetter] << ".\n";
+    else cout << "Invalid input. Please enter an uppercase letter (A-Z).\n";
+    
+    
+    // p4
+    pm();
+    map<int, double> m4 = {
+        {4, 7.5},
+        {25, 6.01},
+        {-9, 3.2},
+        {12, 5.16}
+    };
+    
+    cout << "Initial map:\n"; printMap(m4);
+    
+    m4[3] = 3.75;
+    cout << "After inserting (3, 3.75):\n"; printMap(m4);
+    
+    m4[-10] = 4.3;
+    cout << "After inserting (-10, 4.3):\n"; printMap(m4);
+    
+    auto it = m4.find(12);
+    if (it != m4.end()) cout << "Value at key 12: " << it->second << "\n";
+    else cout << "Key 12 not found.\n";
+    
+    if (it != m4.end()) {
+        m4.erase(it);
+        cout << "After deleting key 12:\n"; printMap(m4);
+    }
+    
+    m4[-9] = 4.44;
+    cout << "After modifying value at key -9 to 4.44:\n"; printMap(m4);
+    
+    
+    // p5
+    pm();
+    unordered_map<string, int> planetMap = {
+        {"Earth", 3},
+        {"Mercury", 1},
+        {"Venus", 2}
+    };
+    
+    cout << "Initial map:" << endl; displayMap(planetMap);
+    
+    planetMap.insert({"Mars", 4});
+    cout << "After inserting (\"Mars\", 4):" << endl; displayMap(planetMap);
+    
+    planetMap.insert({"Saturn", 6});
+    planetMap.insert({"Neptune", 8});
+    cout << "After inserting (\"Saturn\", 6) and (\"Neptune\", 8):" << endl; displayMap(planetMap);
+    
+    cout << "Size of the map: " << planetMap.size() << endl;
+    
+    planetMap.erase("Venus");
+    cout << "After deleting \"Venus\":" << endl; displayMap(planetMap);
+    
+    
+    // p6
+    pm();
+    multimap<int, int> myMultimap = {
+        {100, 3},
+        {150, 4},
+        {100, 90}
+    };
+    
+    auto countOf100 = myMultimap.count(100);
+    cout << "Number of keys equal to 100: " << countOf100 << endl;
+    myMultimap.insert({200, 32});
+    myMultimap.insert({100, -12});
+    myMultimap.insert({90, 45});
+    
+    auto upperBound100 = myMultimap.upper_bound(100);
+    cout << "Keys and values of next two elements at upper bound of key 100:" << endl;
+    for (multimap<int, int>::size_type i = 0; i < 2 && upperBound100 != myMultimap.end(); ++i, ++upperBound100) cout << "Key: " << upperBound100->first << ", Value: " << upperBound100->second << endl;
+    
+    auto it6 = myMultimap.find(100);
+    if (it6 != myMultimap.end()) myMultimap.erase(++it6, myMultimap.end());
+    cout << "Resulting map after deleting elements where key is 100:" << endl;
+    for (const auto& pair : myMultimap) cout << "Key: " << pair.first << ", Value: " << pair.second << endl;
+    
+    
+    // p7
+    pm();
+    int numUsers;
+    cout << "Enter the number of users who want to register: "; cin >> numUsers;
+    
+    vector<string> names;
+    names.reserve(numUsers);
+    
+    for (int i = 0; i < numUsers; ++i) {
+        string name;
+        cout << "Enter name for user " << i+1 << ": "; cin >> name;
+        names.push_back(name);
+    }
+    
+    unordered_set<string> registeredNames;
+    cout << "Registration results:\n";
+    for (const auto& name : names) {
+        if (registeredNames.find(name) == registeredNames.end()) {
+            registeredNames.insert(name);
+            cout <<"OK" << endl;
+        } else {
+            int suffix = 1;
+            string newName = name;
+            while (registeredNames.find(newName) != registeredNames.end()) {
+                newName = name + to_string(suffix);
+                ++suffix;
+            }
+            registeredNames.insert(newName);
+            cout << newName << endl;
+        }
+    }
+    
+    
+    // p8
+    pm();
+    
+    int numberValues;
+    cout << "Number of values: "; cin >> numberValues;
+    
+    vector<int> sequence(numberValues);
+    map<int, int> freq;
+    for (int i = 0; i < numberValues; ++i) {
+        cin >> sequence[i]; freq[sequence[i]]++;
+    }
+    
+    bool good = true;
+    for (const auto& pair : freq) {
+        if (pair.first != pair.second) {
+            good = false;
+            break;
+        }
+    }
+    
+    cout << (good ? "Good sequence" : "Not good sequence") << endl;
+    
+    
+    // p9
+    pm();
+    set<int> s;
+    s.insert(5);
+    s.insert(39);
+    s.insert(10);
+    s.insert(64);
+    s.insert(82);
+    s.insert(35);
+    s.insert(10);
+    s.insert(54);
+    cout << "Elements in sorted order: "; show(s);
+    
+    
+    // p10
+    pm();
+    unordered_set<int> s10;
+    s10.insert(5);
+    s10.insert(39);
+    s10.insert(10);
+    s10.insert(64);
+    s10.insert(82);
+    s10.insert(35);
+    s10.insert(10);
+    s10.insert(54);
+    cout << "All elements: "; show10(s10);
+    
+    
+    // p11
+    pm();
+    multiset<int> s11;
+    s11.insert(5);
+    s11.insert(39);
+    s11.insert(10);
+    s11.insert(64);
+    s11.insert(82);
+    s11.insert(35);
+    s11.insert(10);
+    s11.insert(54);
+    cout << "Elements in multiset (sorted): "; show11(s11);
+    
+    s11.erase(s11.find(10), s11.find(54));
+    cout << "Elements in multiset after removing: "; show11(s11);
+    
+    
+    // p12
+    pm();
+    srand(time(0));
+    multiset<int> numbers;
+
+    for (int i = 0; i < 10; ++i) {
+        int randomNum = 11 + rand() % 10;
+        numbers.insert(randomNum);
+    }
+
+    int userInput;
+    cout << "Enter a number in the range [11, 20]: "; cin >> userInput;
+
+    if (numbers.find(userInput) != numbers.end()) cout << "YES" << endl;
+    else {
+        cout << "Value not found. Multiset contents:" << endl;
+        for (int num : numbers) cout << num << " ";
+        cout << endl;
+    }
+
+    
+    // p13
+    pm();
+    int size;
+    cout << "Enter the size of the sets: "; cin >> size;
+    
+    set<int> set1, set2;
+    cout << "Enter elements of first set:" << endl;
+    for (int i = 0; i < size; ++i) {
+        int num;
+        cin >> num; set1.insert(num);
+    }
+    
+    cout << "Enter elements of second set:" << endl;
+    for (int i = 0; i < size; ++i) {
+        int num;
+        cin >> num;
+        set2.insert(num);
+    }
+    
+    set<int> unionSet;
+    for (auto num : set1) unionSet.insert(num);
+    
+    for (auto num : set2) unionSet.insert(num);
+    
+    set<int> intersectionSet;
+    for (auto num : set1) if (set2.find(num) != set2.end()) intersectionSet.insert(num);
+    
+    set<int> differenceSet;
+    for (auto num : set1) if (set2.find(num) == set2.end()) differenceSet.insert(num);
+    for (auto num : set2) if (set1.find(num) == set1.end()) differenceSet.insert(num);
+    
+    cout << "Union of sets: ";
+    for (auto num : unionSet) cout << num << " ";
+    cout << endl;
+    
+    cout << "Intersection of sets: ";
+    for (auto num : intersectionSet) cout << num << " ";
+    cout << endl;
+    
+    cout << "Difference of sets: ";
+    for (auto num : differenceSet) cout << num << " ";
+    cout << endl;
+    
+    
+    // p14
+    pm();
+    int n14;
+    cout << "Enter the size of the vector: "; cin >> n14;
+    vector<int> vec(n14);
+    cout << "Enter elements of the vector:" << endl;
+    for (int i = 0; i < n14; ++i) cin >> vec[i];
+    
+    set<int> uniqueElements;
+    for (int i = 0; i < n14; ++i) uniqueElements.insert(vec[i]);
+    vec.clear();
+    
+    for (auto num14 : uniqueElements) vec.push_back(num14);
+    cout << "Size of resulting vector: " << vec.size() << endl;
+    
+    cout << "Resulting vector after deleting duplicates: ";
+    for (auto num14 : vec) cout << num14 << " ";
+    cout << endl;
+    
+    
+    // p15
+    pm();
+    string S;
+    int q; cin >> S >> q;
+    
+    while (q--) {
+        int i, j, k;
+        cin >> i >> j >> k;
+        if (k == 1) sort(S.begin() + i - 1, S.begin() + j);
+        else sort(S.begin() + i - 1, S.begin() + j, greater<char>());
+    }
+    cout << S << endl;
+    
+    
+    // p16
+    pm();
+    int n;
+    cout << "Enter the number of elements: "; cin >> n;
+    
+    vector<int> nums(n);
+    cout << "Enter the elements: ";
+    for (int i = 0; i < n; ++i) {
+        cin >> nums[i];
+    }
+    
+    sort(nums.begin(), nums.end());
+    
+    cout << "Sorted sequence: ";
+    for (int num : nums) cout << num << " ";
+    cout << endl;
+    
+    if (isSymmetric(nums)) cout << "Sequence is symmetric." << endl;
+    else  cout << "Sequence is not symmetric." << endl;
+    
+    
+    // p17
+    pm();
+    queue<int> numQueue;
+    numQueue.push(5);
+    numQueue.push(3);
+    numQueue.push(10);
+    numQueue.push(32);
+    numQueue.push(95);
+    numQueue.push(-4);
+    numQueue.push(29);
+    
+    cout << "Size of the queue: " << numQueue.size() << endl;
+    cout << "Value at front: " << numQueue.front() << endl;
+    cout << "Value at back: " << numQueue.back() << endl;
+    
+    displayQueue(numQueue);
+    clearQueue(numQueue);
+    
+    // p18
+    pm();
+    stack<int> numStack;
+    numStack.push(43);
+    numStack.push(90);
+    numStack.push(100);
+    numStack.push(30);
+    numStack.push(28);
+    numStack.push(1);
+    numStack.push(34);
+    
+    cout << "Size of the stack: " << numStack.size() << endl;
+    
+    if (!numStack.empty()) cout << "Value at the top of the stack: " << numStack.top() << endl;
+    else cout << "Stack is empty." << endl;
+    
+    while (!numStack.empty() && numStack.top() != 30) numStack.pop();
+    cout << "Size of the stack after deletion: " << numStack.size() << endl;
+    
+    return 0;
+}
